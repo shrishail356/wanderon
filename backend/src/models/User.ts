@@ -8,7 +8,12 @@ export interface IUserDocument extends Document {
   updatedAt: Date;
   lastLogin?: Date;
   loginCount: number;
+  failedLoginAttempts: number;
+  accountLockedUntil?: Date;
   comparePassword(candidatePassword: string): Promise<boolean>;
+  isAccountLocked(): boolean;
+  resetFailedLoginAttempts(): Promise<void>;
+  incrementFailedLoginAttempts(): Promise<void>;
 }
 
 const userSchema = new Schema<IUserDocument>(
@@ -37,6 +42,14 @@ const userSchema = new Schema<IUserDocument>(
     loginCount: {
       type: Number,
       default: 0,
+    },
+    failedLoginAttempts: {
+      type: Number,
+      default: 0,
+    },
+    accountLockedUntil: {
+      type: Date,
+      default: null,
     },
   },
   {
@@ -72,6 +85,34 @@ userSchema.methods.comparePassword = async function (
   candidatePassword: string
 ): Promise<boolean> {
   return bcrypt.compare(candidatePassword, this.password);
+};
+
+// Check if account is locked
+userSchema.methods.isAccountLocked = function (): boolean {
+  if (!this.accountLockedUntil) {
+    return false;
+  }
+  return new Date() < this.accountLockedUntil;
+};
+
+// Reset failed login attempts
+userSchema.methods.resetFailedLoginAttempts = async function (): Promise<void> {
+  this.failedLoginAttempts = 0;
+  this.accountLockedUntil = undefined;
+  await this.save();
+};
+
+// Increment failed login attempts and lock account if threshold reached
+userSchema.methods.incrementFailedLoginAttempts = async function (): Promise<void> {
+  this.failedLoginAttempts += 1;
+  
+  // Lock account after 5 failed attempts for 30 minutes
+  if (this.failedLoginAttempts >= 5) {
+    const lockDuration = 30 * 60 * 1000; // 30 minutes in milliseconds
+    this.accountLockedUntil = new Date(Date.now() + lockDuration);
+  }
+  
+  await this.save();
 };
 
 // Note: email index is automatically created by unique: true

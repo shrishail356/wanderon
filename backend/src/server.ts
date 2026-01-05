@@ -9,6 +9,8 @@ import { connectDatabase } from './config/database';
 import { env } from './config/env';
 import { apiLimiter } from './middleware/rateLimiter';
 import { errorHandler } from './middleware/errorHandler';
+import { securityLogger } from './middleware/securityLogger';
+import { requestValidator } from './middleware/requestValidator';
 import routes from './routes';
 
 const app: Application = express();
@@ -58,6 +60,12 @@ if (env.NODE_ENV === 'development') {
 
 // Data sanitization against NoSQL injection
 app.use(mongoSanitize());
+
+// Security logging
+app.use(securityLogger);
+
+// Request validation (before routes)
+app.use('/api', requestValidator);
 
 // Rate limiting
 app.use('/api', apiLimiter);

@@ -18,7 +18,7 @@ export class AuthService {
     // Check if user already exists
     const existingUser = await User.findOne({ email: sanitizedData.email });
     if (existingUser) {
-      throw new ValidationError('User with this email already exists');
+      throw new ValidationError('User with this email already exists', 'EMAIL_EXISTS');
     }
 
     // Create user
@@ -46,17 +46,47 @@ export class AuthService {
     // Find user and include password for comparison
     const user = await User.findOne({ email: sanitizedData.email }).select('+password');
     
+    // Always use generic error message to prevent user enumeration
+    const genericError = new AuthenticationError('Invalid email or password');
+    
     if (!user) {
-      throw new AuthenticationError('Invalid email or password');
+      // Add artificial delay to prevent timing attacks (same response time whether user exists or not)
+      await new Promise(resolve => setTimeout(resolve, 100 + Math.random() * 100));
+      throw genericError;
+    }
+
+    // Check if account is locked
+    if (user.isAccountLocked()) {
+      const lockTime = user.accountLockedUntil!;
+      const minutesRemaining = Math.ceil((lockTime.getTime() - Date.now()) / (1000 * 60));
+      throw new AuthenticationError(
+        `Account is temporarily locked due to multiple failed login attempts. Please try again in ${minutesRemaining} minute(s).`,
+        'ACCOUNT_LOCKED'
+      );
     }
 
     // Check password
     const isPasswordValid = await user.comparePassword(sanitizedData.password);
+    
     if (!isPasswordValid) {
-      throw new AuthenticationError('Invalid email or password');
+      // Increment failed login attempts
+      await user.incrementFailedLoginAttempts();
+      
+      // Check if account is now locked after this attempt
+      if (user.isAccountLocked()) {
+        throw new AuthenticationError(
+          'Account has been temporarily locked due to multiple failed login attempts. Please try again in 30 minutes.',
+          'ACCOUNT_LOCKED'
+        );
+      }
+      
+      // Add artificial delay to prevent timing attacks
+      await new Promise(resolve => setTimeout(resolve, 100 + Math.random() * 100));
+      throw genericError;
     }
 
-    // Update last login and increment login count
+    // Successful login - reset failed attempts and update login info
+    await user.resetFailedLoginAttempts();
     user.lastLogin = new Date();
     user.loginCount += 1;
     await user.save();

@@ -1,25 +1,27 @@
 export class AppError extends Error {
   statusCode: number;
   isOperational: boolean;
+  errorCode?: string;
 
-  constructor(message: string, statusCode: number = 500) {
+  constructor(message: string, statusCode: number = 500, errorCode?: string) {
     super(message);
     this.statusCode = statusCode;
     this.isOperational = true;
+    this.errorCode = errorCode;
 
     Error.captureStackTrace(this, this.constructor);
   }
 }
 
 export class ValidationError extends AppError {
-  constructor(message: string) {
-    super(message, 400);
+  constructor(message: string, errorCode?: string) {
+    super(message, 400, errorCode);
   }
 }
 
 export class AuthenticationError extends AppError {
-  constructor(message: string = 'Authentication failed') {
-    super(message, 401);
+  constructor(message: string = 'Authentication failed', errorCode?: string) {
+    super(message, 401, errorCode);
   }
 }
 

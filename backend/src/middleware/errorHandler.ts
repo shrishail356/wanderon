@@ -37,7 +37,7 @@ export const errorHandler = (
 
   // Custom AppError
   if (err instanceof AppError) {
-    return sendError(res, err.message, err.statusCode);
+    return sendError(res, err.message, err.statusCode, undefined, err.errorCode);
   }
 
   // Default error
