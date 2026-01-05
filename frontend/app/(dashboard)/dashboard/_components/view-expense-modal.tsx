@@ -160,12 +160,12 @@ export default function ViewExpenseModal({ expenseId, onClose, onEdit, onDelete 
                   <div className='flex items-start justify-between gap-4'>
                     <div className='flex-1'>
                       <div className='mb-4 flex items-center gap-3'>
-                        <div className={`${category.bg} ${category.border} flex h-16 w-16 items-center justify-center rounded-xl border text-3xl`}>
-                          {category.icon}
+                        <div className={`${category?.bg} ${category?.border} flex h-16 w-16 items-center justify-center rounded-xl border text-3xl`}>
+                          {category?.icon}
                         </div>
                         <div>
                           <h3 className='text-light-gray-4 mb-1 text-2xl font-bold'>{expense.title}</h3>
-                          <span className={`${category.bg} ${category.border} ${category.color} inline-block rounded-md border px-3 py-1 text-sm font-medium`}>
+                          <span className={`${category?.bg} ${category?.border} ${category?.color} inline-block rounded-md border px-3 py-1 text-sm font-medium`}>
                             {expense.category}
                           </span>
                         </div>

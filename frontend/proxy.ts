@@ -1,11 +1,11 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 
-export function middleware(request: NextRequest) {
+export function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
   // Log for debugging
-  console.log('[Middleware] Processing request:', pathname);
+  console.log('[Proxy] Processing request:', pathname);
 
   // Check if user is trying to access protected routes
   const isProtectedRoute = pathname.startsWith('/dashboard');
@@ -16,7 +16,7 @@ export function middleware(request: NextRequest) {
 
   // Redirect to login if accessing protected route without token
   if (isProtectedRoute && !token) {
-    console.log('[Middleware] No token, redirecting to login');
+    console.log('[Proxy] No token, redirecting to login');
     const loginUrl = new URL('/login', request.url);
     loginUrl.searchParams.set('redirect', pathname);
     return NextResponse.redirect(loginUrl);
@@ -24,11 +24,11 @@ export function middleware(request: NextRequest) {
 
   // Redirect to dashboard if accessing auth routes with token
   if (isAuthRoute && token) {
-    console.log('[Middleware] Token exists, redirecting to dashboard');
+    console.log('[Proxy] Token exists, redirecting to dashboard');
     return NextResponse.redirect(new URL('/dashboard', request.url));
   }
 
-  console.log('[Middleware] Allowing request through');
+  console.log('[Proxy] Allowing request through');
   return NextResponse.next();
 }
 

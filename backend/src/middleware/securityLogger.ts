@@ -24,7 +24,6 @@ export const securityLogger = (req: Request, res: Response, next: NextFunction) 
       const email = req.body?.email;
       
       let eventType: SecurityEvent['type'];
-      let details: any = {};
       
       if (req.path.includes('/auth/login')) {
         if (res.statusCode === 200) {

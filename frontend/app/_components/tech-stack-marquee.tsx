@@ -54,7 +54,7 @@ export default function TechStackMarquee() {
           transition={{ duration: 0.6, delay: 0.4 }}
           className="mb-16"
         >
-          <h2 className="text-3xl font-bold text-foreground mb-8 text-center">
+          <h2 className={`text-3xl font-bold mb-8 text-center ${isDark ? 'text-white' : 'text-gray-900'}`}>
             Technology Stack
           </h2>
           <div className="relative flex h-full w-full flex-col items-center justify-center overflow-hidden bg-transparent py-10">
@@ -90,7 +90,7 @@ export default function TechStackMarquee() {
                     ) : null}
                   </div>
                   <div className="text-center">
-                    <h3 className="text-lg font-bold whitespace-nowrap text-foreground mb-2">
+                    <h3 className={`text-lg font-bold whitespace-nowrap mb-2 ${isDark ? 'text-white' : 'text-gray-900'}`}>
                       {tech.name}
                     </h3>
                     <Badge 

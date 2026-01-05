@@ -166,7 +166,7 @@ export default function LoginForm() {
               size={20}
               className='mt-0.5 shrink-0'
             />
-            <p className='min-w-0 flex-1 break-words'>{error}</p>
+            <p className='min-w-0 flex-1 wrap-break-word'>{error}</p>
           </motion.div>
         )}
       </AnimatePresence>
@@ -328,7 +328,7 @@ export default function LoginForm() {
         disabled={loading}
         whileHover={{ scale: 1.01 }}
         whileTap={{ scale: 0.99 }}
-        className='relative z-10 h-12 w-full overflow-hidden rounded-xl bg-gradient-to-r from-blue-500 to-purple-500 font-semibold text-white shadow-lg shadow-blue-500/25 transition-all hover:shadow-xl hover:shadow-blue-500/30 disabled:opacity-50'
+        className='relative z-10 h-12 w-full overflow-hidden rounded-xl bg-linear-to-r from-blue-500 to-purple-500 font-semibold text-white shadow-lg shadow-blue-500/25 transition-all hover:shadow-xl hover:shadow-blue-500/30 disabled:opacity-50'
       >
         <span className='relative z-10 flex items-center justify-center text-white'>
           {loading ? (
