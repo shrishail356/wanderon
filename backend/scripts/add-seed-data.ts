@@ -45,25 +45,25 @@ const generateExpense = (userId: mongoose.Types.ObjectId, type: ExpenseType, cat
 
 const seed = async () => {
   try {
-    console.log('🌱 Starting seed data addition for shrishailpatil1555@gmail.com...');
+    console.log('🌱 Starting seed data addition for test01@gmail.com...');
 
     // Connect to database
     await mongoose.connect(MONGODB_URI);
     console.log('✅ Connected to MongoDB');
 
     // Find or create user
-    let user = await User.findOne({ email: 'shrishailpatil1555@gmail.com' });
+    let user = await User.findOne({ email: 'test01@gmail.com' });
     
     if (!user) {
       // Create user if doesn't exist
-      const hashedPassword = await bcrypt.hash('Temp@1234', 12);
+      const hashedPassword = await bcrypt.hash('TestPass@01', 12);
       user = await User.create({
-        email: 'shrishailpatil1555@gmail.com',
+        email: 'test01@gmail.com',
         password: hashedPassword,
       });
-      console.log('✅ Created user: shrishailpatil1555@gmail.com');
+      console.log('✅ Created user: test01@gmail.com');
     } else {
-      console.log('✅ Found existing user: shrishailpatil1555@gmail.com');
+      console.log('✅ Found existing user: test01@gmail.com');
     }
 
     // Delete existing expenses for this user (optional - comment out if you want to keep existing)

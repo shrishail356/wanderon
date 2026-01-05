@@ -166,7 +166,7 @@ export default function LoginForm() {
               size={20}
               className='mt-0.5 shrink-0'
             />
-            <p className='flex-1'>{error}</p>
+            <p className='min-w-0 flex-1 break-words'>{error}</p>
           </motion.div>
         )}
       </AnimatePresence>
@@ -328,7 +328,7 @@ export default function LoginForm() {
         disabled={loading}
         whileHover={{ scale: 1.01 }}
         whileTap={{ scale: 0.99 }}
-        className='relative z-10 h-12 w-full overflow-hidden rounded-xl bg-linear-to-r from-blue-500 to-purple-500 font-semibold text-white shadow-lg shadow-blue-500/25 transition-all hover:shadow-xl hover:shadow-blue-500/30 disabled:opacity-50'
+        className='relative z-10 h-12 w-full overflow-hidden rounded-xl bg-gradient-to-r from-blue-500 to-purple-500 font-semibold text-white shadow-lg shadow-blue-500/25 transition-all hover:shadow-xl hover:shadow-blue-500/30 disabled:opacity-50'
       >
         <span className='relative z-10 flex items-center justify-center text-white'>
           {loading ? (
@@ -356,6 +356,32 @@ export default function LoginForm() {
           </Link>
         </p>
       </div>
+
+      {/* Test Credentials */}
+      <motion.div
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.3, duration: 0.5 }}
+        className='mt-6 rounded-xl border border-blue-500/20 bg-blue-500/5 p-4 backdrop-blur-sm'
+      >
+        <p className='mb-3 text-center text-xs font-medium text-light-gray-2'>
+          Don't want to sign up? Explore with test credentials:
+        </p>
+        <div className='space-y-2 rounded-lg bg-dark-gray-3/50 p-3 text-xs'>
+          <div className='flex items-center justify-between'>
+            <span className='text-light-gray-1'>Email:</span>
+            <code className='rounded bg-dark-gray-4 px-2 py-1 font-mono text-blue-400'>
+              test01@gmail.com
+            </code>
+          </div>
+          <div className='flex items-center justify-between'>
+            <span className='text-light-gray-1'>Password:</span>
+            <code className='rounded bg-dark-gray-4 px-2 py-1 font-mono text-blue-400'>
+              TestPass@01
+            </code>
+          </div>
+        </div>
+      </motion.div>
     </form>
   );
 }
