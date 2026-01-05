@@ -2,6 +2,8 @@
 
 A production-ready, enterprise-grade expense tracking application with secure authentication, built with modern technologies and best security practices.
 
+🌐 **Live Application**: [https://wanderon.shrishail.io/](https://wanderon.shrishail.io/)
+
 ## 📋 Table of Contents
 
 - [Overview](#overview)
@@ -19,6 +21,8 @@ A production-ready, enterprise-grade expense tracking application with secure au
 - [Deployment](#deployment)
 
 ## 🎯 Overview
+
+**🌐 Live Demo**: [https://wanderon.shrishail.io/](https://wanderon.shrishail.io/)
 
 This is a full-stack expense tracking application that allows users to securely manage their income and expenses. The application features:
 
