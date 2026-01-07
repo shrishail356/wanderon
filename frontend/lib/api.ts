@@ -28,9 +28,14 @@ api.interceptors.response.use(
     return response;
   },
   (error) => {
+    // Only redirect to login for 401 errors on protected routes
+    // Don't redirect for auth endpoints (login/register) - let them handle errors themselves
     if (error.response?.status === 401) {
-      // Handle unauthorized - redirect to login
-      if (typeof window !== 'undefined') {
+      const url = error.config?.url || '';
+      const isAuthEndpoint = url.includes('/auth/login') || url.includes('/auth/register') || url.includes('/auth/me');
+      
+      // Only redirect if it's NOT an auth endpoint (i.e., it's a protected route)
+      if (!isAuthEndpoint && typeof window !== 'undefined') {
         window.location.href = '/login';
       }
     }
